@@ -1,4 +1,3 @@
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -23,18 +22,16 @@ public class HomeWorkTests {
     }
 
     @Test
-    void addToWishListTest() {
+    void productReview() {
         given()
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")
-                .cookie("Nop.customer=ba78fc97-1802-4fed-a5d5-ba6860f8d4bb;")
-                .body("addtocart_14.EnteredQuantity=1")
+                .body("productReviewId=227&washelpful=true")
                 .when()
-                .post("http://demowebshop.tricentis.com/addproducttocart/details/14/2")
+                .post("http://demowebshop.tricentis.com/setproductreviewhelpfulness")
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("success", is(true))
-                .body("updatetopwishlistsectionhtml", is("(1)"));
+                .body("Result", is("Only registered customers can set review helpfulness"));
     }
 
     @Test
@@ -51,6 +48,5 @@ public class HomeWorkTests {
                 .body("Result", is("Thank you for signing up! " +
                         "A verification email has been sent. " +
                         "We appreciate your interest."));
-
     }
 }
