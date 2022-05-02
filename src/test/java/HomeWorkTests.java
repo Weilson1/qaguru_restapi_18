@@ -1,9 +1,8 @@
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.CoreMatchers.is;
 
 public class HomeWorkTests {
 
@@ -17,10 +16,10 @@ public class HomeWorkTests {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("success", CoreMatchers.is(true))
-                .body("message", CoreMatchers.is("The product has been added to your " +
+                .body("success", is(true))
+                .body("message", is("The product has been added to your " +
                         "<a href=\"/cart\">shopping cart</a>"))
-                .body("updatetopcartsectionhtml", CoreMatchers.is("(1)"));
+                .body("updatetopcartsectionhtml", is("(1)"));
     }
 
     @Test
@@ -34,7 +33,24 @@ public class HomeWorkTests {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("success", CoreMatchers.is(true))
-                .body("updatetopwishlistsectionhtml", CoreMatchers.is("(1)"));
+                .body("success", is(true))
+                .body("updatetopwishlistsectionhtml", is("(1)"));
+    }
+
+    @Test
+    void subscribeNewsLetterTest() {
+        given()
+                .contentType("application/x-www-form-urlencoded; charset=UTF-8")
+                .body("email=dasd%40dasd.ru")
+                .when()
+                .post("http://demowebshop.tricentis.com/subscribenewsletter")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("Success", is(true))
+                .body("Result", is("Thank you for signing up! " +
+                        "A verification email has been sent. " +
+                        "We appreciate your interest."));
+
     }
 }
